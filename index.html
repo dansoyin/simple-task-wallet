@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Language Toggle -->
+        <select id="language-select" class="language-select">
+            <option value="en">EN</option>
+            <option value="id">ID</option>
+        </select>
+
+        <!-- Dark Mode Toggle -->
+        <button id="theme-toggle" class="theme-toggle" title="Toggle Dark Mode">
+            🌙
+        </button>
+
+        <!-- Header Section -->
+        <header class="app-header">
+            <h1 class="app-title">My Tasks</h1>
+            <p class="app-subtitle">Stay organized, stay productive</p>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>Progress</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <form id="todo-form" class="todo-form">
+                <div class="input-row">
+                    <input type="text" id="todo-input" placeholder="What needs to be done?" autocomplete="off">
+                    <button type="submit" id="add-btn" class="add-btn">Add Task</button>
+                </div>
+                <div class="input-options">
+                    <select id="priority-select" class="priority-select">
+                        <option value="low">🟢 Low</option>
+                        <option value="medium" selected>🟡 Medium</option>
+                        <option value="high">🔴 High</option>
+                    </select>
+                    <input type="date" id="due-date" class="due-date-input">
+                </div>
+            </form>
+        </section>
+
+        <!-- Controls Section -->
+        <section class="controls-section">
+            <!-- Search -->
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search tasks...">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <!-- Filter & Sort Row -->
+            <div class="filter-sort-row">
+                <!-- Filter Buttons -->
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+
+                <!-- Sort Dropdown -->
+                <select id="sort-select" class="sort-select">
+                    <option value="newest">🕐 Newest First</option>
+                    <option value="oldest">📜 Oldest First</option>
+                    <option value="priority">⚡ Priority High→Low</option>
+                    <option value="dueDate">📅 Due Date</option>
+                </select>
+            </div>
+
+            <!-- Clear Completed Button -->
+            <button id="clear-completed-btn" class="clear-btn">Clear Completed</button>
+        </section>
+
+        <!-- Task Counter -->
+        <section class="counter-section">
+            <span id="task-counter">0 tasks</span>
+        </section>
+
+        <!-- Task List -->
+        <section class="task-list-section">
+            <ul id="todo-list" class="todo-list">
+                <!-- Tasks will be dynamically added here -->
+            </ul>
+        </section>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state">
+            <span class="empty-icon">📝</span>
+            <p>No tasks yet. Add your first task above!</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
