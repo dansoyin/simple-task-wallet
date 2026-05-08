@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker - Money Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="finance.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1 class="app-title">
+                    <i class="fas fa-wallet"></i>
+                    <span data-i18n="appTitle">Finance Tracker</span>
+                </h1>
+                <p class="app-subtitle" data-i18n="appSubtitle">Manage your money with ease</p>
+            </div>
+            <div class="header-right">
+                <a href="index.html" class="home-btn" title="Go to Home">
+                    🏠
+                </a>
+                <select id="language-select" class="language-select">
+                    <option value="en">EN</option>
+                    <option value="id">ID</option>
+                </select>
+                <button id="theme-toggle" class="theme-toggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="export-btn" class="icon-btn" title="Export Data">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button id="import-btn" class="icon-btn" title="Import Data">
+                    <i class="fas fa-upload"></i>
+                </button>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+            </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <section class="summary-cards">
+            <div class="card balance-card">
+                <div class="card-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="card-content">
+                    <span class="card-label" data-i18n="totalBalance">Total Balance</span>
+                    <span class="card-value" id="total-balance">Rp 0</span>
+                </div>
+            </div>
+            <div class="card income-card">
+                <div class="card-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="card-content">
+                    <span class="card-label" data-i18n="totalIncome">Total Income</span>
+                    <span class="card-value" id="total-income">Rp 0</span>
+                </div>
+            </div>
+            <div class="card expense-card">
+                <div class="card-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="card-content">
+                    <span class="card-label" data-i18n="totalExpense">Total Expenses</span>
+                    <span class="card-value" id="total-expense">Rp 0</span>
+                </div>
+            </div>
+            <div class="card savings-card">
+                <div class="card-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="card-content">
+                    <span class="card-label" data-i18n="savingsRate">Savings Rate</span>
+                    <span class="card-value" id="savings-rate">0%</span>
+                </div>
+                <div class="savings-progress">
+                    <div class="progress-fill" id="savings-progress"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Savings Goal Section -->
+        <section class="savings-goal-section">
+            <div class="savings-goal-card">
+                <div class="goal-header">
+                    <h3 data-i18n="savingsGoal">Savings Goal</h3>
+                    <button id="set-goal-btn" class="small-btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+                <div class="goal-amount">
+                    <span id="current-savings">Rp 0</span>
+                    <span class="goal-divider">/</span>
+                    <span id="goal-amount">Rp 0</span>
+                </div>
+                <div class="goal-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="goal-progress-fill"></div>
+                    </div>
+                    <span class="goal-percent" id="goal-percent">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Transaction Form -->
+        <section class="transaction-form-section">
+            <form id="transaction-form" class="transaction-form">
+                <div class="form-tabs">
+                    <button type="button" class="tab-btn active" data-type="expense">
+                        <i class="fas fa-minus-circle"></i>
+                        <span data-i18n="expense">Expense</span>
+                    </button>
+                    <button type="button" class="tab-btn" data-type="income">
+                        <i class="fas fa-plus-circle"></i>
+                        <span data-i18n="income">Income</span>
+                    </button>
+                </div>
+                <div class="form-fields">
+                    <div class="form-group">
+                        <input type="text" id="transaction-title" placeholder="Transaction title" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="transaction-amount" placeholder="Amount" min="0" step="100" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="transaction-category" required>
+                            <option value="" data-i18n="selectCategory">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" id="transaction-date" required>
+                    </div>
+                    <button type="submit" class="submit-btn" data-i18n="addTransaction">Add Transaction</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Filters & Search -->
+        <section class="filters-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search transactions..." data-i18n-placeholder="searchPlaceholder">
+            </div>
+            <div class="filter-options">
+                <select id="filter-type" class="filter-select">
+                    <option value="all" data-i18n="allTypes">All Types</option>
+                    <option value="income" data-i18n="income">Income</option>
+                    <option value="expense" data-i18n="expense">Expense</option>
+                </select>
+                <select id="filter-category" class="filter-select">
+                    <option value="all" data-i18n="allCategories">All Categories</option>
+                </select>
+                <select id="filter-month" class="filter-select">
+                    <option value="all" data-i18n="allMonths">All Months</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="statistics-section">
+            <div class="stats-card">
+                <h3 data-i18n="categoryBreakdown">Category Breakdown</h3>
+                <div class="category-stats" id="category-stats">
+                </div>
+            </div>
+            <div class="stats-card chart-card">
+                <h3 data-i18n="incomeVsExpense">Income vs Expense</h3>
+                <div class="simple-chart" id="simple-chart">
+                    <div class="chart-bars">
+                        <div class="chart-bar income-bar" id="chart-income"></div>
+                        <div class="chart-bar expense-bar" id="chart-expense"></div>
+                    </div>
+                    <div class="chart-labels">
+                        <span><i class="fas fa-arrow-up"></i> <span data-i18n="income">Income</span></span>
+                        <span><i class="fas fa-arrow-down"></i> <span data-i18n="expense">Expense</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transaction List -->
+        <section class="transactions-section">
+            <div class="section-header">
+                <h2 data-i18n="transactionHistory">Transaction History</h2>
+                <button id="clear-all-btn" class="danger-btn" data-i18n="clearAll">Clear All</button>
+            </div>
+            <div class="transactions-list" id="transactions-list">
+            </div>
+            <div class="empty-state" id="empty-state">
+                <i class="fas fa-receipt"></i>
+                <p data-i18n="noTransactions">No transactions yet</p>
+                <span data-i18n="addFirstTransaction">Add your first transaction above!</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="editTransaction">Edit Transaction</h3>
+                <button class="modal-close" id="close-edit-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="edit-form">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label data-i18n="type">Type</label>
+                    <select id="edit-type">
+                        <option value="expense" data-i18n="expense">Expense</option>
+                        <option value="income" data-i18n="income">Income</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="title">Title</label>
+                    <input type="text" id="edit-title" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="amount">Amount</label>
+                    <input type="number" id="edit-amount" min="0" step="100" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="category">Category</label>
+                    <select id="edit-category" required></select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="date">Date</label>
+                    <input type="date" id="edit-date" required>
+                </div>
+                <button type="submit" class="submit-btn" data-i18n="saveChanges">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Goal Modal -->
+    <div class="modal" id="goal-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="setSavingsGoal">Set Savings Goal</h3>
+                <button class="modal-close" id="close-goal-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="goal-form">
+                <div class="form-group">
+                    <label data-i18n="goalAmount">Goal Amount</label>
+                    <input type="number" id="goal-amount-input" min="0" step="1000" required>
+                </div>
+                <button type="submit" class="submit-btn" data-i18n="saveGoal">Save Goal</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="toast-icon"></i>
+        <span class="toast-message"></span>
+    </div>
+
+    <script src="finance.js"></script>
+</body>
+</html>
