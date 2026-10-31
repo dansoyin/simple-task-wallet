@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+    <title>Catetin</title>
+    <meta name="description" content="Catat tugas & keuangan secepat ngetik chat.">
+    <meta name="theme-color" content="#ffffff" id="theme-color">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Catetin">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="stylesheet" href="css/app.css">
+    <script>
+        // Apply the saved theme before first paint (no white flash in dark mode).
+        try {
+            var s = JSON.parse(localStorage.getItem('catetin.v2') || '{}').settings || {};
+            if (s.theme === 'light' || s.theme === 'dark') document.documentElement.dataset.theme = s.theme;
+        } catch (e) { /* first run */ }
+    </script>
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- Header -->
+        <header class="topbar">
+            <div class="brand">
+                <img src="icons/icon.svg" alt="" width="28" height="28">
+                <span>Catetin</span>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Halaman">
+                <button class="tab" role="tab" data-act="tab" data-tab="tasks" aria-selected="true">Tugas</button>
+                <button class="tab" role="tab" data-act="tab" data-tab="money" aria-selected="false">Uang</button>
+            </div>
+            <div class="top-actions">
+                <button class="icon-btn" data-act="search" aria-label="Cari" title="Cari">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                </button>
+                <button class="icon-btn" data-act="settings" aria-label="Pengaturan" title="Pengaturan">
+                    <svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Panes: one at a time on phones, side by side on wide screens -->
+        <main class="panes">
+            <section class="pane pane-tasks" id="pane-tasks" role="tabpanel" aria-label="Tugas">
+                <div class="subtabs" role="tablist" aria-label="Tampilan tugas">
+                    <button class="subtab" data-act="view" data-view="day">Harian</button>
+                    <button class="subtab" data-act="view" data-view="week">Mingguan</button>
+                    <button class="subtab" data-act="view" data-view="month">Bulanan</button>
+                    <button class="subtab" data-act="view" data-view="more">Daftar</button>
+                </div>
+                <div class="pane-body" id="tasks-view"></div>
+            </section>
+            <section class="pane pane-money" id="pane-money" role="tabpanel" aria-label="Uang">
+                <div class="pane-body" id="money-view"></div>
+            </section>
+        </main>
+
+        <!-- Composer: type like a chat -->
+        <footer class="dock" id="dock">
+            <div class="dock-inner">
+                <div class="preview" id="preview" aria-live="polite"></div>
+                <div class="quick" id="quick"></div>
+                <form class="composer" id="composer" autocomplete="off">
+                    <textarea id="input" rows="1" enterkeyhint="send" autocapitalize="sentences" spellcheck="false"
+                        placeholder="Ketik tugas atau pengeluaran…" aria-label="Catat sesuatu"></textarea>
+                    <button class="send" type="submit" aria-label="Kirim">
+                        <svg viewBox="0 0 24 24"><path d="M4 12 20 4l-6 16-3-7z"/></svg>
+                    </button>
+                </form>
+            </div>
+        </footer>
+    </div>
+
+    <dialog class="sheet" id="sheet" aria-labelledby="sheet-title"></dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+    <script src="js/util.js"></script>
+    <script src="js/parser.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
